@@ -1,3 +1,30 @@
+function http(method, url, headers) {
+  return new Promise(function(resolve, reject) {
+    let request = new XMLHttpRequest();
+
+    function resHandler() {
+      resolve(this.response);
+    }
+
+    function rejHandler() {
+      reject(this.response);
+    }
+
+    request.addEventListener("load", resHandler);
+    request.addEventListener("error", rejHandler);
+
+    request.open(method.toUpperCase(), url);
+
+    if (headers) {
+      for (let i = 0; i < headers.length; i++) {
+        request.setRequestHeader(headers[i][0], headers[i][1]);
+      }
+    }
+
+    request.send();
+  });
+}
+
 function selectText(containerid) {
   "use strict";
   if (document.selection) {
